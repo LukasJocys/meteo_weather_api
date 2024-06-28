@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Cities Weather Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .weather-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        .temperature {
+            font-size: 48px;
+            color: #ff4500;
+        }
+        .condition {
+            font-size: 24px;
+            color: #00c8ff;
+        }
+        .city-name {
+            font-size: 24px;
+            color: #ffffff;
+        }
+        .clock {
+            font-size: 24px;
+            color: #ffffff;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function startTime() {
+            const today = new Date();
+            let h = today.getHours();
+            let m = today.getMinutes();
+            let s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
+            setTimeout(startTime, 1000);
+        }
+
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+            return i;
+        }
+    </script>
+</head>
+<body onload="startTime()">
+<div class="clock" id="clock"></div>
+<div class="container">
+    <div th:each="entry : ${cityWeatherData.entrySet()}" class="weather-container">
+        <div class="city-name" th:text="${entry.key.substring(0, 1).toUpperCase() + entry.key.substring(1)}">City</div>
+        <div class="temperature" th:text="${entry.value.temperature + '°C'}">0°C</div>
+        <div class="condition" th:text="${entry.value.condition}">Condition</div>
+    </div>
+</div>
+</body>
+</html>
